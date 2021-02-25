@@ -146,7 +146,7 @@ while flag == 1:
         if 0 <= data['Data']['TotalCount'] < page * pageSize:
             flag = 0
         for item in data['Data']['Instances']:
-            print item
+            print 'InstanceId: {},Status: {}, ErrorMessage: {}'.format(item['InstanceId'], item['Status'], item['ErrorMessage'])
         page = page + 1
     else:
         flag = 0
