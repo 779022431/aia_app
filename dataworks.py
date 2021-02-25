@@ -36,12 +36,12 @@ def write_file(dir_path, file, data):
 
 
 def bytes_to_json(bytes_):
-    data = str(bytes_, "utf-8")
+    data = str(bytes_)
     return json.loads(data)
 
 
 def bytes_to_str(bytes_):
-    return str(bytes_, "utf-8")
+    return str(bytes_)
 
 
 def str_split(str_):
