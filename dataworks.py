@@ -1,14 +1,16 @@
+# -*- coding: utf-8 -*-
 import ConfigParser
 import json
 import os
 import sys
 import time
 
+reload(sys)
+sys.setdefaultencoding('uft8')
 sys.path.append(r'lib')
 
 from aliyunsdkcore.client import AcsClient
 from aliyunsdkcore.request import CommonRequest
-from aliyunsdkcore.profile import region_provider
 
 
 class Config:
