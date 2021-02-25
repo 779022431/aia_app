@@ -137,7 +137,7 @@ while flag == 1:
         if data['Data']['TotalCount'] < page * pageSize:
             flag = 0
         for alertMessage in data['Data']['AlertMessages']:
-            print alertMessage['AlertUser']
+            write_file('./', alertMessage['AlertId'] + '.html', alertMessage['Content'])
         page = page + 1
     else:
         flag = 0
