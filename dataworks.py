@@ -6,7 +6,7 @@ import sys
 import time
 
 reload(sys)
-sys.setdefaultencoding('uft8')
+sys.setdefaultencoding('utf8')
 sys.path.append(r'lib')
 
 from aliyunsdkcore.client import AcsClient
