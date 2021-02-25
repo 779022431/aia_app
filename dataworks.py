@@ -126,7 +126,7 @@ config = Config()
 clientId = config.env('app', 'clientId')
 clientSecret = config.env('app', 'clientSecret')
 region = config.env('app', 'region')
-region_provider.add_endpoint(config.env('app', 'productName'), config.env('app', 'regionId'), config.env('app', 'endPoint'))
+region_provider.add_endpoint(config.env('addEndPoint', 'productName'), config.env('addEndPoint', 'regionId'), config.env('addEndPoint', 'endPoint'))
 app = App(clientId, clientSecret, region)
 page = 1
 pageSize = 10
