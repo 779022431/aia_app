@@ -129,7 +129,7 @@ now = time_unix()
 beginTime = utc_time_date(now - 10 * 3600)
 endTime = utc_time_date(now)
 while flag == 1:
-    ret = app.build_request('ListAlertMessages', {'PageNumber': page, 'PageSize': pageSize, 'BeginTime': beginTime, 'EndTime': endTime})
+    ret = app.doAction('ListAlertMessages', {'PageNumber': page, 'PageSize': pageSize, 'BeginTime': beginTime, 'EndTime': endTime})
     if ret['code'] == 0:
         data = bytes_to_json(ret['data'])
         if data['Data']['TotalCount'] < page * pageSize:
