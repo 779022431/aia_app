@@ -81,6 +81,16 @@ def utc_time_date(timestamp=0, format_="%Y-%m-%dT%H:%M:%S+0800"):
     else:
         return time.strftime(format_, time.localtime(timestamp))
 
+def unicode_convert(input_data):    
+    if isinstance(input_data, dict):        
+        return {unicode_convert(key): unicode_convert(value) for key, value in input_data.iteritems()}    
+    elif isinstance(input_data, list):        
+        return [unicode_convert(element) for element in input_data]    
+    elif isinstance(input_data, unicode):        
+        return input_data.encode('utf-8')    
+    else:        
+        return input_data
+
 
 class App:
     client = None
@@ -127,17 +137,15 @@ app.setVersion(config.env('dataworks', 'version'))
 page = 1
 pageSize = 10
 flag = 1
-now = time_unix()
-beginTime = utc_time_date(now - 10 * 3600)
-endTime = utc_time_date(now)
 while flag == 1:
-    ret = app.doAction('ListAlertMessages', {'PageNumber': page, 'PageSize': pageSize, 'BeginTime': beginTime, 'EndTime': endTime})
+    ret = app.doAction('ListInstances', {'NodeId': 13582,'ProjectEnv': 'PROD', 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': 157})
     if ret['code'] == 0:
-        data = json.loads(ret['data'])
-        if data['Data']['TotalCount'] < page * pageSize:
+        data = json.loads(ret['data'], 'utf-8')
+        data = unicode_convert(data)
+        if data['Data']['TotalCount'] >= 0 and data['Data']['TotalCount'] < page * pageSize:
             flag = 0
-        for alertMessage in data['Data']['AlertMessages']:
-            write_file('./', alertMessage['AlertId'] + '.html', alertMessage['Content'])
+        for item in data['Data']['Instances']:
+            print item
         page = page + 1
     else:
         flag = 0
