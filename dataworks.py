@@ -8,6 +8,7 @@ sys.path.append(r'lib')
 
 from aliyunsdkcore.client import AcsClient
 from aliyunsdkcore.request import CommonRequest
+from aliyunsdkcore.profile import region_provider
 
 
 class Config:
@@ -72,6 +73,13 @@ def time_date(timestamp=0, format_="%Y-%m-%d %H:%M:%S"):
         return time.strftime(format_, time.localtime(timestamp))
 
 
+def utc_time_date(timestamp=0, format_="%Y-%m-%dT%H:%M:%S+0800"):
+    if timestamp == 0:
+        return time.strftime(format_, time.localtime())
+    else:
+        return time.strftime(format_, time.localtime(timestamp))
+
+
 class App:
     client = None
     dataWorksDomain = 'dataworks.aliyuncs.com'
@@ -113,24 +121,21 @@ class App:
         request = self.__build_request(self.dataWorksDomain, self.dataWorksVersion, action, param)
         return self.__doAction(request)
 
-    def RdsDescribeDBInstances(self, param=None):
-        if param is None:
-            param = {}
-        action = 'DescribeDBInstances'
-        request = self.__build_request(self.rdsDomain, self.rdsVersion, action, param)
-        return self.__doAction(request)
-
 
 config = Config()
 clientId = config.env('app', 'clientId')
 clientSecret = config.env('app', 'clientSecret')
 region = config.env('app', 'region')
+region_provider.add_endpoint(config.env('app', 'productName'), config.env('app', 'regionId'), config.env('app', 'endPoint'))
 app = App(clientId, clientSecret, region)
 page = 1
 pageSize = 10
 flag = 1
+now = time_unix()
+beginTime = utc_time_date(now - 10 * 3600)
+endTime = utc_time_date(now)
 while flag == 1:
-    ret = app.DwsListAlertMessages({'PageNumber': page, 'PageSize': pageSize, 'BeginTime': time_date(), 'EndTime': time_date()})
+    ret = app.DwsListAlertMessages({'PageNumber': page, 'PageSize': pageSize, 'BeginTime': beginTime, 'EndTime': endTime})
     if ret['code'] == 0:
         data = bytes_to_json(ret['data'])
         if data['Data']['TotalCount'] < page * pageSize:
