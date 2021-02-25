@@ -82,20 +82,18 @@ def utc_time_date(timestamp=0, format_="%Y-%m-%dT%H:%M:%S+0800"):
 
 class App:
     client = None
-    dataWorksDomain = 'dataworks.aliyuncs.com'
-    dataWorksVersion = '2020-05-18'
-    rdsDomain = 'rds.aliyuncs.com'
-    rdsVersion = '2014-08-15'
+    domain = None
+    version = None
 
     def __init__(self, clientId, clientSecret, region):
         self.client = AcsClient(clientId, clientSecret, region)
 
-    def __build_request(self, domain, version, action, param):
+    def build_request(self, action, param):
         request = CommonRequest()
         request.set_accept_format('json')
         request.set_method('POST')
-        request.set_domain(domain)
-        request.set_version(version)
+        request.set_domain(self.domain)
+        request.set_version(self.version)
         request.set_action_name(action)
         request.set_query_params(param)
         return request
@@ -107,27 +105,17 @@ class App:
         except Exception as e:
             return {"code": 1, "message": e.message}
 
-    def DwsListProjects(self, param=None):
-        if param is None:
-            param = {}
-        action = 'ListProjects'
-        request = self.__build_request(self.dataWorksDomain, self.dataWorksVersion, action, param)
-        return self.__doAction(request)
+    def setDomain(self, domain):
+        self.domain = domain
 
-    def DwsListAlertMessages(self, param=None):
-        if param is None:
-            param = {}
-        action = 'ListAlertMessages'
-        request = self.__build_request(self.dataWorksDomain, self.dataWorksVersion, action, param)
-        return self.__doAction(request)
+    def setVersion(self, version):
+        self.version = version
 
 
 config = Config()
-clientId = config.env('app', 'clientId')
-clientSecret = config.env('app', 'clientSecret')
-region = config.env('app', 'region')
-region_provider.add_endpoint(config.env('addEndPoint', 'productName'), config.env('addEndPoint', 'regionId'), config.env('addEndPoint', 'endPoint'))
-app = App(clientId, clientSecret, region)
+app = App(config.env('app', 'clientId'), config.env('app', 'clientSecret'), config.env('app', 'region'))
+app.setDomain(config.env('dataworks', 'domain'))
+app.version(config.env('dataworks', 'version'))
 page = 1
 pageSize = 10
 flag = 1
@@ -135,7 +123,7 @@ now = time_unix()
 beginTime = utc_time_date(now - 10 * 3600)
 endTime = utc_time_date(now)
 while flag == 1:
-    ret = app.DwsListAlertMessages({'PageNumber': page, 'PageSize': pageSize, 'BeginTime': beginTime, 'EndTime': endTime})
+    ret = app.build_request('ListAlertMessages', {'PageNumber': page, 'PageSize': pageSize, 'BeginTime': beginTime, 'EndTime': endTime})
     if ret['code'] == 0:
         data = bytes_to_json(ret['data'])
         if data['Data']['TotalCount'] < page * pageSize:
