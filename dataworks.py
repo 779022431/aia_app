@@ -131,10 +131,11 @@ endTime = utc_time_date(now)
 while flag == 1:
     ret = app.doAction('ListAlertMessages', {'PageNumber': page, 'PageSize': pageSize, 'BeginTime': beginTime, 'EndTime': endTime})
     if ret['code'] == 0:
-        data = bytes_to_json(ret['data'])
+        data = json.loads(ret['data'])
         if data['Data']['TotalCount'] < page * pageSize:
             flag = 0
-        print(data)
+        for alertMessage in data['Data']['AlertMessages']:
+            print alertMessage['AlertUser']
         page = page + 1
     else:
         flag = 0
