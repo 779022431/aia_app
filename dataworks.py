@@ -88,7 +88,7 @@ class App:
     def __init__(self, clientId, clientSecret, region):
         self.client = AcsClient(clientId, clientSecret, region)
 
-    def build_request(self, action, param):
+    def __build_request(self, action, param):
         request = CommonRequest()
         request.set_accept_format('json')
         request.set_method('POST')
@@ -111,11 +111,17 @@ class App:
     def setVersion(self, version):
         self.version = version
 
+    def doAction(self, action, params=None):
+        if params is None:
+            params = {}
+        request = self.__build_request(action, params)
+        return self.__doAction(request)
+
 
 config = Config()
 app = App(config.env('app', 'clientId'), config.env('app', 'clientSecret'), config.env('app', 'region'))
 app.setDomain(config.env('dataworks', 'domain'))
-app.version(config.env('dataworks', 'version'))
+app.setVersion(config.env('dataworks', 'version'))
 page = 1
 pageSize = 10
 flag = 1
