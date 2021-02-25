@@ -81,14 +81,15 @@ def utc_time_date(timestamp=0, format_="%Y-%m-%dT%H:%M:%S+0800"):
     else:
         return time.strftime(format_, time.localtime(timestamp))
 
-def unicode_convert(input_data):    
-    if isinstance(input_data, dict):        
-        return {unicode_convert(key): unicode_convert(value) for key, value in input_data.iteritems()}    
-    elif isinstance(input_data, list):        
-        return [unicode_convert(element) for element in input_data]    
-    elif isinstance(input_data, unicode):        
-        return input_data.encode('utf-8')    
-    else:        
+
+def unicode_convert(input_data):
+    if isinstance(input_data, dict):
+        return {unicode_convert(key): unicode_convert(value) for key, value in input_data.iteritems()}
+    elif isinstance(input_data, list):
+        return [unicode_convert(element) for element in input_data]
+    elif isinstance(input_data, unicode):
+        return input_data.encode('utf-8')
+    else:
         return input_data
 
 
@@ -138,11 +139,11 @@ page = 1
 pageSize = 10
 flag = 1
 while flag == 1:
-    ret = app.doAction('ListInstances', {'NodeId': 13582,'ProjectEnv': 'PROD', 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': 157})
+    ret = app.doAction('ListInstances', {'NodeId': 13582, 'ProjectEnv': 'PROD', 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': 157})
     if ret['code'] == 0:
         data = json.loads(ret['data'], 'utf-8')
         data = unicode_convert(data)
-        if data['Data']['TotalCount'] >= 0 and data['Data']['TotalCount'] < page * pageSize:
+        if 0 <= data['Data']['TotalCount'] < page * pageSize:
             flag = 0
         for item in data['Data']['Instances']:
             print item
