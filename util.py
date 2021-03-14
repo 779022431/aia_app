@@ -22,7 +22,7 @@ class Config:
         return self.cf.get(section, key)
 
 
-def write_file(dir_path, file, data):
+def write_file_append(dir_path, file, data):
     if sys.platform == "win32":
         dir_path = dir_path + '\\'
     else:
@@ -34,6 +34,17 @@ def write_file(dir_path, file, data):
     fp.write(data + "\n")
     fp.close()
 
+def write_file(dir_path, file, data):
+    if sys.platform == "win32":
+        dir_path = dir_path + '\\'
+    else:
+        dir_path = dir_path + '/'
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
+    filepath = dir_path + file
+    fp = open(filepath, "w")
+    fp.write(data + "\n")
+    fp.close()
 
 def bytes_to_json(bytes_):
     data = str(bytes_)
@@ -90,6 +101,20 @@ def unicode_convert(input_data):
     else:
         return input_data
 
+def implode(char, data):
+    return char.join(str(i) for i in data)
+
+def explode(char, data):
+    return data.split(char)
+
+
+def readFile(file):
+    fileObj = open(file)
+    try:
+        txt = fileObj.read()
+    finally:
+        fileObj.close()
+    return txt
 
 class App:
     client = None
