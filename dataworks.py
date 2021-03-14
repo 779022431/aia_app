@@ -131,7 +131,8 @@ now = time_unix()
 beginTime = utc_time_date(now - 40 * 3600)
 endTime = utc_time_date(now)
 while flag == 1:
-    ret = app.doAction('ListAlertMessages', {'AlertMethods':'SMS', 'PageNumber': page, 'PageSize': pageSize, 'BeginTime': beginTime, 'EndTime': endTime})
+    ret = app.doAction('ListAlertMessages',
+                       {'AlertMethods': 'SMS', 'PageNumber': page, 'PageSize': pageSize, 'BeginTime': beginTime, 'EndTime': endTime})
     if ret['code'] == 0:
         data = json.loads(ret['data'])
         if data['Data']['TotalCount'] > 0 and data['Data']['TotalCount'] < page * pageSize:
@@ -140,7 +141,7 @@ while flag == 1:
             # print get_dict_value(alertMessage,'AlertId')
             # print get_dict_value(alertMessage,'Nodes')
             # print get_dict_value(alertMessage,'Instances')
-            print 'AlertId: {},AlertMessageStatus: {}, AlertUser: {}'.format(alertMessage['AlertId'], alertMessage['AlertMessageStatus'], alertMessage['AlertUser'])
+            print 'AlertId: {}, Content: {}'.format(alertMessage['AlertId'], alertMessage['Content'])
             # write_file('./', bytes(alertMessage['AlertId']) + '.html', alertMessage['Content'])
         page = page + 1
     else:
