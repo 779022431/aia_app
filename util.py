@@ -34,6 +34,7 @@ def write_file_append(dir_path, file, data):
     fp.write(data + "\n")
     fp.close()
 
+
 def write_file(dir_path, file, data):
     if sys.platform == "win32":
         dir_path = dir_path + '\\'
@@ -45,6 +46,7 @@ def write_file(dir_path, file, data):
     fp = open(filepath, "w")
     fp.write(data + "\n")
     fp.close()
+
 
 def bytes_to_json(bytes_):
     data = str(bytes_)
@@ -101,8 +103,10 @@ def unicode_convert(input_data):
     else:
         return input_data
 
+
 def implode(char, data):
     return char.join(str(i) for i in data)
+
 
 def explode(char, data):
     return data.split(char)
@@ -115,6 +119,7 @@ def readFile(file):
     finally:
         fileObj.close()
     return txt
+
 
 class App:
     client = None

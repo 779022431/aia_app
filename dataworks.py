@@ -141,7 +141,7 @@ while flag == 1:
             # print get_dict_value(alertMessage,'AlertId')
             # print get_dict_value(alertMessage,'Nodes')
             # print get_dict_value(alertMessage,'Instances')
-            print 'AlertId: {}, Content: {}'.format(alertMessage['AlertId'], alertMessage['Content'])
+            print 'AlertId: {}, Content: {}, Nodes:{}'.format(alertMessage['AlertId'], alertMessage['Content'], alertMessage['Nodes'])
             # write_file('./', bytes(alertMessage['AlertId']) + '.html', alertMessage['Content'])
         page = page + 1
     else:
