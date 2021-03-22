@@ -33,4 +33,4 @@ for projectId in projectIds:
             flag = 0
             print(ret['message'])
 dirPath = app.config.env('app', 'dirpath')
-util.write_file(dirPath, 'nodes.txt', util.implode(',', projectIds))
+util.write_file(dirPath, 'nodes.txt', util.implode(',', ids))
