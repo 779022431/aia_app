@@ -13,12 +13,11 @@ dirPath = app.config.env('app', 'dirpath')
 str2 = util.readFile(dirPath + '/nodes.txt')
 str2 = str2.strip('\n')
 ids = json.loads(str2)
-page = 1
-pageSize = 10
-flag = 1
-outputData = []
 outputData = []
 for idItem in ids:
+    page = 1
+    pageSize = 10
+    flag = 1
     while flag == 1:
         ret = app.doAction('ListInstances', {'NodeId': idItem['nodeId'], 'ProjectEnv': 'PROD', 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': idItem['projectId']})
         if ret['code'] == 0:
