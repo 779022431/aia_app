@@ -23,7 +23,7 @@ for projectId in projectIds:
         if ret['code'] == 0:
             data = json.loads(ret['data'])
             data = unicode_convert(data)
-            if data['Data']['TotalCount'] > 0 and data['Data']['TotalCount'] < page * pageSize:
+            if 0 < data['Data']['TotalCount'] < page * pageSize:
                 flag = 0
             for item in data['Data']['Nodes']:
                 ids.append({'nodeId': item['NodeId'], 'projectId': item['ProjectId']})
