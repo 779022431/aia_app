@@ -129,7 +129,7 @@ class App:
 
     def __init__(self):
         self.config = Config()
-        self.client = AcsClient(self.config.env('app', 'clientId'), self.config.env('app', 'clientSecret'), self.config.env('app', 'region'))
+        # self.client = AcsClient(self.config.env('app', 'clientId'), self.config.env('app', 'clientSecret'), self.config.env('app', 'region'))
 
     def __build_request(self, action, param):
         request = CommonRequest()
