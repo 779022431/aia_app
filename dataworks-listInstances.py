@@ -19,7 +19,7 @@ for idItem in ids:
     pageSize = 10
     flag = 1
     while flag == 1:
-        ret = app.doAction('ListInstances', {'NodeId': idItem['nodeId'], 'ProjectEnv': 'PROD', 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': idItem['projectId']})
+        ret = app.doAction('ListInstances', {'NodeId': idItem['NodeId'], 'ProjectEnv': 'PROD', 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': idItem['ProjectId']})
         if ret['code'] == 0:
             data = json.loads(ret['data'], 'utf-8')
             data = unicode_convert(data)
@@ -31,5 +31,4 @@ for idItem in ids:
         else:
             flag = 0
             print(ret['message'])
-dirPath = app.config.env('app', 'dirpath')
 write_file(dirPath, 'instances.txt', json.dumps(outputData))

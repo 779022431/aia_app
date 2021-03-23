@@ -11,12 +11,14 @@ app = App().getDataworksInstance()
 dirPath = app.config.env('app', 'dirpath')
 str2 = util.readFile(dirPath + '/instances.txt')
 str2 = str2.strip('\n')
-ids = util.explode(',', str2)
-for id in ids:
-    ret = app.doAction('GetInstanceLog', {'InstanceId': id, 'ProjectEnv': 'PROD'})
-    if ret['code'] == 0:
-        data = json.loads(ret['data'], 'utf-8')
-        data = unicode_convert(data)
-        print 'InstanceId: {},ErrorCode: {}, ErrorMessage: {}, Data: {}'.format(id, data['ErrorCode'], data['ErrorMessage'], data['Data'])
-    else:
-        print(ret['message'])
+ids = json.loads(str2)
+outputData = []
+for idItem in ids:
+    if idItem['Status'] == 'FAILURE':
+        ret = app.doAction('GetInstanceLog', {'InstanceId': idItem['InstanceId'], 'ProjectEnv': 'PROD'})
+        if ret['code'] == 0:
+            data = json.loads(ret['data'], 'utf-8')
+            outputData.append({'instanceId':idItem['InstanceId'],'data':data['Data']})
+        else:
+            print(ret['message'])
+util.write_file(dirPath, 'instances_logs.txt', json.dumps(outputData))

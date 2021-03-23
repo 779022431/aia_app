@@ -19,15 +19,14 @@ while flag == 1:
     if ret['code'] == 0:
         data = json.loads(ret['data'])
         data = unicode_convert(data)
-        if data['PageResult']['TotalCount'] > 0 and data['PageResult']['TotalCount'] < page * pageSize:
+        if 0 < data['PageResult']['TotalCount'] < page * pageSize:
             flag = 0
         for item in data['PageResult']['ProjectList']:
             projectIds.append(item['ProjectId'])
-            print item
         page = page + 1
     else:
         flag = 0
         print(ret['message'])
 
 dirPath = app.config.env('app', 'dirpath')
-write_file(dirPath, 'projects.txt', util.implode(',', projectIds))
+write_file(dirPath, 'projects.txt', json.dumps(projectIds))
