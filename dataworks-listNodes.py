@@ -26,6 +26,7 @@ for projectId in projectIds:
             if 0 < data['Data']['TotalCount'] < page * pageSize:
                 flag = 0
             for item in data['Data']['Nodes']:
+                item['timestamp'] = util.time_unix()
                 ids.append(item)
             page = page + 1
         else:
