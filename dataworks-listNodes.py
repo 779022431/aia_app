@@ -9,7 +9,7 @@ sys.setdefaultencoding('utf8')
 
 app = App().getDataworksInstance()
 dirPath = app.config.env('app', 'dirpath')
-pageSize = int(app.config.env('app', 'pageSize'))
+pageSize = int(app.config.env('dataworks', 'pageSize'))
 projectIdsStr = app.config.env('dataworks', 'projectIds')
 projectEnv = app.config.env('dataworks', 'projectEnv')
 projectIds = util.explode(',', projectIdsStr)
