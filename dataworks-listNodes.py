@@ -2,7 +2,6 @@
 import json
 import sys
 from util import App
-from util import unicode_convert
 import util
 
 reload(sys)
@@ -10,26 +9,28 @@ sys.setdefaultencoding('utf8')
 
 app = App().getDataworksInstance()
 dirPath = app.config.env('app', 'dirpath')
-str2 = util.readFile(dirPath + '/projects.txt')
-str2 = str2.strip('\n')
-projectIds = json.loads(str2)
-ids = []
+pageSize = int(app.config.env('app', 'pageSize'))
+projectIdsStr = app.config.env('dataworks', 'projectIds')
+projectIds = util.explode(',', projectIdsStr)
+writeData = []
 for projectId in projectIds:
+    if projectId == "":
+        continue
+    projectId = int(projectId)
     page = 1
-    pageSize = 50
     flag = 1
     while flag == 1:
         ret = app.doAction('ListNodes', {'ProjectEnv': 'PROD', 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': projectId})
         if ret['code'] == 0:
             data = json.loads(ret['data'])
-            data = unicode_convert(data)
-            if 0 < data['Data']['TotalCount'] < page * pageSize:
+            if 0 <= data['Data']['TotalCount'] <= page * pageSize:
                 flag = 0
             for item in data['Data']['Nodes']:
                 item['timestamp'] = util.time_unix()
-                ids.append(item)
+                writeData.append(item)
             page = page + 1
         else:
             flag = 0
             print(ret['message'])
-util.write_file(dirPath, 'nodes.txt', json.dumps(ids))
+writeFile = app.config.env('dataworks', 'nodesFile')
+util.write_file(dirPath, writeFile, json.dumps(writeData))

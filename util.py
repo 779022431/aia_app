@@ -5,8 +5,6 @@ import os
 import sys
 import time
 
-sys.path.append(r'lib')
-
 from aliyunsdkcore.client import AcsClient
 from aliyunsdkcore.request import CommonRequest
 
@@ -112,8 +110,8 @@ def explode(char, data):
     return data.split(char)
 
 
-def readFile(file):
-    fileObj = open(file)
+def readFile(filePath):
+    fileObj = open(filePath)
     try:
         txt = fileObj.read()
     finally:
@@ -129,7 +127,7 @@ class App:
 
     def __init__(self):
         self.config = Config()
-        # self.client = AcsClient(self.config.env('app', 'clientId'), self.config.env('app', 'clientSecret'), self.config.env('app', 'region'))
+        self.client = AcsClient(self.config.env('app', 'clientId'), self.config.env('app', 'clientSecret'), self.config.env('app', 'region'))
 
     def __build_request(self, action, param):
         request = CommonRequest()

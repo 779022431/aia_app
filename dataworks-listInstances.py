@@ -10,13 +10,16 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 app = App().getDataworksInstance()
 dirPath = app.config.env('app', 'dirpath')
-str2 = util.readFile(dirPath + '/nodes.txt')
-str2 = str2.strip('\n')
+pageSize = int(app.config.env('app', 'pageSize'))
+nodesFile = app.config.env('dataworks', 'nodesFile')
+str2 = util.readFile(dirPath + '/' + nodesFile)
 ids = json.loads(str2)
 outputData = []
+noSuccessData = []
 for idItem in ids:
+    if idItem == "":
+        continue
     page = 1
-    pageSize = 10
     flag = 1
     while flag == 1:
         ret = app.doAction('ListInstances', {'NodeId': idItem['NodeId'], 'ProjectEnv': 'PROD', 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': idItem['ProjectId']})
@@ -26,9 +29,17 @@ for idItem in ids:
             if 0 <= data['Data']['TotalCount'] < page * pageSize:
                 flag = 0
             for item in data['Data']['Instances']:
+                item['ProgramType'] = idItem['ProgramType']
+                if item['Status'] != 'SUCCESS':
+                    noSuccessData.append(item)
+                else:
+                    item['UseTime'] = item['FinishTime'] - item['BeginRunningTime']
                 outputData.append(item)
             page = page + 1
         else:
             flag = 0
             print(ret['message'])
-write_file(dirPath, 'instances.txt', json.dumps(outputData))
+writeFile1 = app.config.env('dataworks', 'instancesFile')
+write_file(dirPath, writeFile1, json.dumps(outputData))
+writeFile2 = app.config.env('dataworks', 'instancesNoSuccessFile')
+write_file(dirPath, writeFile2, json.dumps(noSuccessData))
