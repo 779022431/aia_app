@@ -9,11 +9,12 @@ sys.setdefaultencoding('utf8')
 app = App().getDataworksInstance()
 dirPath = app.config.env('app', 'dirpath')
 readFile = app.config.env('dataworks', 'instancesNoSuccessFile')
+projectEnv = app.config.env('dataworks', 'projectEnv')
 str2 = util.readFile(dirPath + '/' + readFile)
 ids = json.loads(str2)
 outputData = []
 for idItem in ids:
-    ret = app.doAction('GetInstanceLog', {'InstanceId': idItem['InstanceId'], 'ProjectEnv': 'PROD'})
+    ret = app.doAction('GetInstanceLog', {'InstanceId': idItem['InstanceId'], 'ProjectEnv': projectEnv})
     if ret['code'] == 0:
         data = json.loads(ret['data'], 'utf-8')
         outputData.append({'instanceId': idItem['InstanceId'], 'logData': data['Data']})

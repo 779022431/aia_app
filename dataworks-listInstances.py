@@ -12,6 +12,7 @@ app = App().getDataworksInstance()
 dirPath = app.config.env('app', 'dirpath')
 pageSize = int(app.config.env('app', 'pageSize'))
 nodesFile = app.config.env('dataworks', 'nodesFile')
+projectEnv = app.config.env('dataworks', 'projectEnv')
 str2 = util.readFile(dirPath + '/' + nodesFile)
 ids = json.loads(str2)
 outputData = []
@@ -22,7 +23,7 @@ for idItem in ids:
     page = 1
     flag = 1
     while flag == 1:
-        ret = app.doAction('ListInstances', {'NodeId': idItem['NodeId'], 'ProjectEnv': 'PROD', 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': idItem['ProjectId']})
+        ret = app.doAction('ListInstances', {'NodeId': idItem['NodeId'], 'ProjectEnv': projectEnv, 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': idItem['ProjectId']})
         if ret['code'] == 0:
             data = json.loads(ret['data'], 'utf-8')
             data = unicode_convert(data)

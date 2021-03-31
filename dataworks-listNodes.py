@@ -11,6 +11,7 @@ app = App().getDataworksInstance()
 dirPath = app.config.env('app', 'dirpath')
 pageSize = int(app.config.env('app', 'pageSize'))
 projectIdsStr = app.config.env('dataworks', 'projectIds')
+projectEnv = app.config.env('dataworks', 'projectEnv')
 projectIds = util.explode(',', projectIdsStr)
 writeData = []
 for projectId in projectIds:
@@ -20,7 +21,7 @@ for projectId in projectIds:
     page = 1
     flag = 1
     while flag == 1:
-        ret = app.doAction('ListNodes', {'ProjectEnv': 'PROD', 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': projectId})
+        ret = app.doAction('ListNodes', {'ProjectEnv': projectEnv, 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': projectId})
         if ret['code'] == 0:
             data = json.loads(ret['data'])
             if 0 <= data['Data']['TotalCount'] <= page * pageSize:
