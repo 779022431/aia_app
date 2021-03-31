@@ -20,4 +20,4 @@ for idItem in ids:
     else:
         print(ret['message'])
 writeFile2 = app.config.env('dataworks', 'instanceLog')
-util.write_file(dirPath, writeFile2, json.dumps(outputData))
+util.write_file_append(dirPath, writeFile2, json.dumps(outputData))
