@@ -16,7 +16,7 @@ for idItem in ids:
     ret = app.doAction('GetInstanceLog', {'InstanceId': idItem['InstanceId'], 'ProjectEnv': 'PROD'})
     if ret['code'] == 0:
         data = json.loads(ret['data'], 'utf-8')
-        outputData.append({'instanceId': idItem['InstanceId'], 'data': data['Data']})
+        outputData.append({'instanceId': idItem['InstanceId'], 'logData': data['Data']})
     else:
         print(ret['message'])
 writeFile2 = app.config.env('dataworks', 'instanceLog')
