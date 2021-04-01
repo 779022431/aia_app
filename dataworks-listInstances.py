@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 import sys
-from util import App
+from app import App
 from util import unicode_convert
 from util import write_file
 import util
