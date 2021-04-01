@@ -3,7 +3,6 @@ import json
 import sys
 from app import App
 from util import unicode_convert
-from util import write_file
 import util
 
 reload(sys)
@@ -41,6 +40,10 @@ for idItem in ids:
             flag = 0
             print(ret['message'])
 writeFile1 = app.config.env('dataworks', 'instancesFile')
-write_file(dirPath, writeFile1, json.dumps(outputData))
+writeStr = ''
+for i in outputData:
+    writeStr = writeStr + json.dumps(i) + "\n"
+util.write_file_append(dirPath, writeFile1, writeStr)
+
 writeFile2 = app.config.env('dataworks', 'instancesNoSuccessFile')
-write_file(dirPath, writeFile2, json.dumps(noSuccessData))
+util.write_file_append(dirPath, writeFile2, json.dumps(noSuccessData))

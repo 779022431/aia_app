@@ -20,5 +20,8 @@ for idItem in ids:
         outputData.append({'instanceId': idItem['InstanceId'], 'logData': data['Data']})
     else:
         print(ret['message'])
-writeFile2 = app.config.env('dataworks', 'instanceLog')
-util.write_file_append(dirPath, writeFile2, json.dumps(outputData))
+writeFile = app.config.env('dataworks', 'instanceLog')
+writeStr = ''
+for i in outputData:
+    writeStr = writeStr + json.dumps(i) + "\n"
+util.write_file_append(dirPath, writeFile, writeStr)

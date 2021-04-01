@@ -34,4 +34,7 @@ for projectId in projectIds:
             flag = 0
             print(ret['message'])
 writeFile = app.config.env('dataworks', 'nodesFile')
-util.write_file(dirPath, writeFile, json.dumps(writeData))
+writeStr = ''
+for i in writeData:
+    writeStr = writeStr + json.dumps(i) + "\n"
+util.write_file_append(dirPath, writeFile, writeStr)
