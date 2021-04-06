@@ -13,11 +13,10 @@ dirPath = app.config.env('app', 'dirpath')
 pageSize = int(app.config.env('dataworks', 'pageSize'))
 nodesFile = app.config.env('dataworks', 'nodesFile')
 projectEnv = app.config.env('dataworks', 'projectEnv')
-str2 = util.readFile(dirPath + '/2' + nodesFile)
+str2 = util.readFile(dirPath + '/org_' + nodesFile)
 ids = json.loads(str2)
 outputData = []
 noSuccessData = []
-timestamp = util.time_unix()
 for idItem in ids:
     if idItem == "":
         continue
@@ -36,7 +35,6 @@ for idItem in ids:
                     noSuccessData.append(item)
                 else:
                     item['UseTime'] = item['FinishTime'] - item['BeginRunningTime']
-                item['timestamp'] = timestamp
                 outputData.append(item)
             page = page + 1
         else:
