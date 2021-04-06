@@ -25,7 +25,7 @@ def listBusiness(projectId1):
             data1 = json.loads(ret1['data'])
             if 0 <= data1['Data']['TotalCount'] <= page1 * pageSize:
                 flag1 = 0
-            for item1 in data['Data']['Nodes']:
+            for item1 in data['Data']['Business']:
                 businessData1.append(item1)
             page1 = page1 + 1
         else:
@@ -48,9 +48,10 @@ for projectId in projectIds:
             ret = app.doAction('ListNodes', {'BizName': businessItem['BusinessName'], 'ProjectEnv': projectEnv, 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': projectId})
             if ret['code'] == 0:
                 data = json.loads(ret['data'])
-                if 0 <= data['Data']['TotalCount'] <= page * pageSize:
+                totalCount = util.get_dict_value(data['Data'], 'TotalCount', 0)
+                if 0 <= totalCount <= page * pageSize:
                     flag = 0
-                for item in data['Data']['Business']:
+                for item in data['Data']['Nodes']:
                     writeData.append(item)
                 page = page + 1
             else:
