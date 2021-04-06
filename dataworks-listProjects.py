@@ -14,7 +14,7 @@ writeData = []
 page = 1
 flag = 1
 while flag == 1:
-    ret = app.doAction('ListProjects', {'PageNumber': 1, 'PageSize': pageSize})
+    ret = app.doAction('ListProjects', {'PageNumber': page, 'PageSize': pageSize})
     if ret['code'] == 0:
         data = json.loads(ret['data'])
         if 0 <= data['PageResult']['TotalCount'] <= page * pageSize:
