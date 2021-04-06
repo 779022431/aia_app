@@ -14,7 +14,6 @@ projectIdsStr = app.config.env('dataworks', 'projectIds')
 projectEnv = app.config.env('dataworks', 'projectEnv')
 projectIds = util.explode(',', projectIdsStr)
 writeData = []
-timestamp = util.time_unix()
 for projectId in projectIds:
     if projectId == "":
         continue
@@ -28,7 +27,6 @@ for projectId in projectIds:
             if 0 <= data['Data']['TotalCount'] <= page * pageSize:
                 flag = 0
             for item in data['Data']['Nodes']:
-                item['timestamp'] = timestamp
                 writeData.append(item)
             page = page + 1
         else:
@@ -39,3 +37,4 @@ writeStr = ''
 for i in writeData:
     writeStr = writeStr + json.dumps(i) + "\n"
 util.write_file_append(dirPath, writeFile, writeStr)
+util.write_file(dirPath, '2'+writeFile, json.dumps(writeData))
