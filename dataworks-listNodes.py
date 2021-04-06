@@ -35,6 +35,7 @@ def listBusiness(projectId1):
 
 
 writeData = []
+orgData = []
 for projectId in projectIds:
     if projectId == "":
         continue
@@ -53,6 +54,7 @@ for projectId in projectIds:
                     flag = 0
                 for item in data['Data']['Nodes']:
                     writeData.append(item)
+                    orgData.append({'NodeId': item['NodeId'], 'ProjectId': item['ProjectId'], 'ProgramType': item['ProgramType']})
                 page = page + 1
             else:
                 flag = 0
@@ -62,4 +64,4 @@ writeStr = ''
 for i in writeData:
     writeStr = writeStr + json.dumps(i) + "\n"
 util.write_file_append(dirPath, writeFile, writeStr)
-util.write_file(dirPath, 'org_' + writeFile, json.dumps(writeData))
+util.write_file(dirPath, 'org_' + writeFile, json.dumps(orgData))
