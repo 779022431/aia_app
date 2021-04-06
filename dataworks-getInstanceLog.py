@@ -13,11 +13,12 @@ projectEnv = app.config.env('dataworks', 'projectEnv')
 str2 = util.readFile(dirPath + '/' + readFile)
 ids = json.loads(str2)
 outputData = []
+timestamp=util.time_unix()
 for idItem in ids:
     ret = app.doAction('GetInstanceLog', {'InstanceId': idItem['InstanceId'], 'ProjectEnv': projectEnv})
     if ret['code'] == 0:
         data = json.loads(ret['data'], 'utf-8')
-        outputData.append({'instanceId': idItem['InstanceId'], 'logData': data['Data']})
+        outputData.append({'instanceId': idItem['InstanceId'], 'logData': data['Data'],'timestamp':timestamp})
     else:
         print(ret['message'])
 writeFile = app.config.env('dataworks', 'instanceLog')
