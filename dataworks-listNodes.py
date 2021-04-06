@@ -25,7 +25,7 @@ def listBusiness(projectId1):
             data1 = json.loads(ret1['data'])
             if 0 <= data1['Data']['TotalCount'] <= page1 * pageSize:
                 flag1 = 0
-            for item1 in data['Data']['Business']:
+            for item1 in data1['Data']['Business']:
                 businessData1.append(item1)
             page1 = page1 + 1
         else:
