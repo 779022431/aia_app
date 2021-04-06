@@ -50,7 +50,7 @@ for projectId in projectIds:
                 data = json.loads(ret['data'])
                 if 0 <= data['Data']['TotalCount'] <= page * pageSize:
                     flag = 0
-                for item in data['Data']['Nodes']:
+                for item in data['Data']['Business']:
                     writeData.append(item)
                 page = page + 1
             else:
