@@ -41,7 +41,6 @@ for projectId in projectIds:
         continue
     projectId = int(projectId)
     businessData = listBusiness(projectId)
-    print businessData
     for businessItem in businessData:
         page = 1
         flag = 1
