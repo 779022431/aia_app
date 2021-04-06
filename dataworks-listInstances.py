@@ -3,6 +3,7 @@ import json
 import sys
 from app import App
 from util import unicode_convert
+from util import write_file
 import util
 
 reload(sys)
@@ -12,10 +13,11 @@ dirPath = app.config.env('app', 'dirpath')
 pageSize = int(app.config.env('dataworks', 'pageSize'))
 nodesFile = app.config.env('dataworks', 'nodesFile')
 projectEnv = app.config.env('dataworks', 'projectEnv')
-str2 = util.readFile(dirPath + '/' + nodesFile)
+str2 = util.readFile(dirPath + '/2' + nodesFile)
 ids = json.loads(str2)
 outputData = []
 noSuccessData = []
+timestamp = util.time_unix()
 for idItem in ids:
     if idItem == "":
         continue
@@ -34,6 +36,7 @@ for idItem in ids:
                     noSuccessData.append(item)
                 else:
                     item['UseTime'] = item['FinishTime'] - item['BeginRunningTime']
+                item['timestamp'] = timestamp
                 outputData.append(item)
             page = page + 1
         else:
@@ -46,4 +49,4 @@ for i in outputData:
 util.write_file_append(dirPath, writeFile1, writeStr)
 
 writeFile2 = app.config.env('dataworks', 'instancesNoSuccessFile')
-util.write_file_append(dirPath, writeFile2, json.dumps(noSuccessData))
+util.write_file(dirPath, writeFile2, json.dumps(noSuccessData))
