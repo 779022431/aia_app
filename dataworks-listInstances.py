@@ -28,7 +28,7 @@ for idItem in ids:
     page = 1
     flag = 1
     while flag == 1:
-        ret = app.doAction('ListInstances', {'BegnBizdate': BeginBizdate, 'EndBizdate': EndBizdate, 'BizName': idItem['BusinessName'], 'ProjectEnv': projectEnv, 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': idItem['ProjectId']})
+        ret = app.doAction('ListInstances', {'BeginBizdate': BeginBizdate, 'EndBizdate': EndBizdate, 'BizName': idItem['BusinessName'], 'ProjectEnv': projectEnv, 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': idItem['ProjectId']})
         if ret['code'] == 0:
             data = json.loads(ret['data'], 'utf-8')
             totalCount = util.get_dict_value(data['Data'], 'TotalCount', 0)
