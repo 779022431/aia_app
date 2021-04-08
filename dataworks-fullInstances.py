@@ -43,7 +43,7 @@ for bizDate in fullBizDate:
                 for item in items:
                     item['ProgramType'] = util.get_dict_value(nodeProgramType, str(item['NodeId']), '')
                     if item['Status'] != 'SUCCESS':
-                        noSuccessData.append(item)
+                        noSuccessData.append({'InstanceId': item['InstanceId']})
                     else:
                         item['UseTime'] = item['FinishTime'] - item['BeginRunningTime']
                     outputData.append(json.dumps(item))
