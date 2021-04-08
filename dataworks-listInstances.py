@@ -34,7 +34,8 @@ for idItem in ids:
             totalCount = util.get_dict_value(data['Data'], 'TotalCount', 0)
             if 0 <= totalCount < page * pageSize:
                 flag = 0
-            for item in data['Data']['Instances']:
+            items = util.get_dict_value(data['Data'], 'Instances', 0)
+            for item in items:
                 item['ProgramType'] = util.get_dict_value(nodeProgramType, str(item['NodeId']), '')
                 if item['Status'] != 'SUCCESS':
                     noSuccessData.append(item)

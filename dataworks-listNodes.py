@@ -25,7 +25,8 @@ for idItem in ids:
             totalCount = util.get_dict_value(data['Data'], 'TotalCount', 0)
             if 0 <= totalCount <= page * pageSize:
                 flag = 0
-            for item in data['Data']['Nodes']:
+            items = util.get_dict_value(data['Data'], 'Nodes', [])
+            for item in items:
                 nodeProgramType[item['NodeId']] = item['ProgramType']
                 writeData.append(item)
             page = page + 1
