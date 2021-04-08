@@ -36,6 +36,6 @@ writeFile = app.config.env('dataworks', 'nodesFile')
 writeStr = ''
 for i in writeData:
     writeStr = writeStr + json.dumps(i) + "\n"
-util.write_file_append(dirPath, writeFile, writeStr)
+util.write_file(dirPath, writeFile, writeStr)
 writeFile = app.config.env('dataworks', 'nodeProgramTypeFile')
 util.write_file(dirPath, writeFile, json.dumps(nodeProgramType))
