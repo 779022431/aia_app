@@ -41,16 +41,13 @@ for idItem in ids:
                     noSuccessData.append(item)
                 else:
                     item['UseTime'] = item['FinishTime'] - item['BeginRunningTime']
-                outputData.append(item)
+                outputData.append(json.dumps(item))
             page = page + 1
         else:
             flag = 0
             print(ret['message'])
 writeFile1 = app.config.env('dataworks', 'instancesFile')
-writeStr = ''
-for i in outputData:
-    writeStr = writeStr + json.dumps(i) + "\n"
-util.write_file_append(dirPath, writeFile1, writeStr)
+util.write_file_append(dirPath, writeFile1, util.implode("\n", outputData))
 
 writeFile2 = app.config.env('dataworks', 'instancesNoSuccessFile')
 util.write_file(dirPath, writeFile2, json.dumps(noSuccessData))

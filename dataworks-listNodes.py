@@ -28,15 +28,13 @@ for idItem in ids:
             items = util.get_dict_value(data['Data'], 'Nodes', [])
             for item in items:
                 nodeProgramType[item['NodeId']] = item['ProgramType']
-                writeData.append(item)
+                writeData.append(json.dumps(item))
             page = page + 1
         else:
             flag = 0
             print(ret['message'])
 writeFile = app.config.env('dataworks', 'nodesFile')
-writeStr = ''
-for i in writeData:
-    writeStr = writeStr + json.dumps(i) + "\n"
-util.write_file(dirPath, writeFile, writeStr)
+util.write_file(dirPath, writeFile, util.implode("\n", writeData))
+
 writeFile = app.config.env('dataworks', 'nodeProgramTypeFile')
 util.write_file(dirPath, writeFile, json.dumps(nodeProgramType))
