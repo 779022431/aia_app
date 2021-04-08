@@ -28,7 +28,7 @@ for idItem in ids:
     page = 1
     flag = 1
     while flag == 1:
-        ret = app.doAction('ListInstances', {'BizName': idItem['BusinessName'], 'NodeId': idItem['NodeId'], 'ProjectEnv': projectEnv, 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': idItem['ProjectId']})
+        ret = app.doAction('ListInstances', {'BizName': idItem['BusinessName'], 'ProjectEnv': projectEnv, 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': idItem['ProjectId']})
         if ret['code'] == 0:
             data = json.loads(ret['data'], 'utf-8')
             data = unicode_convert(data)
