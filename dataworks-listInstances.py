@@ -35,7 +35,7 @@ for idItem in ids:
             if 0 <= data['Data']['TotalCount'] < page * pageSize:
                 flag = 0
             for item in data['Data']['Instances']:
-                item['ProgramType'] = nodeProgramType[item['NodeId']]['ProgramType']
+                item['ProgramType'] = nodeProgramType[item['NodeId']]
                 if item['Status'] != 'SUCCESS':
                     noSuccessData.append(item)
                 else:
