@@ -17,13 +17,16 @@ str2 = util.readFile(dirPath + '/org_' + nodesFile)
 ids = json.loads(str2)
 outputData = []
 noSuccessData = []
+now = util.time_unix()
+BeginBizdate = util.time_date(now - 20 * 60)
+EndBizdate = util.time_date(now)
 for idItem in ids:
     if idItem == "":
         continue
     page = 1
     flag = 1
     while flag == 1:
-        ret = app.doAction('ListInstances', {'NodeId': idItem['NodeId'], 'ProjectEnv': projectEnv, 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': idItem['ProjectId']})
+        ret = app.doAction('ListInstances', {'BeginBizdate': BeginBizdate, 'EndBizdate': EndBizdate, 'NodeId': idItem['NodeId'], 'ProjectEnv': projectEnv, 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': idItem['ProjectId']})
         if ret['code'] == 0:
             data = json.loads(ret['data'], 'utf-8')
             data = unicode_convert(data)
