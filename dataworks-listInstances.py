@@ -31,8 +31,8 @@ for idItem in ids:
         ret = app.doAction('ListInstances', {'BizName': idItem['BusinessName'], 'ProjectEnv': projectEnv, 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': idItem['ProjectId']})
         if ret['code'] == 0:
             data = json.loads(ret['data'], 'utf-8')
-            data = unicode_convert(data)
-            if 0 <= data['Data']['TotalCount'] < page * pageSize:
+            totalCount = util.get_dict_value(data['Data'], 'TotalCount', 0)
+            if 0 <= totalCount < page * pageSize:
                 flag = 0
             for item in data['Data']['Instances']:
                 item['ProgramType'] = util.get_dict_value(nodeProgramType, str(item['NodeId']), '')
