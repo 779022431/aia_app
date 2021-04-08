@@ -27,7 +27,6 @@ def write_file(dir_path, file, data):
         os.makedirs(dir_path)
     filepath = dir_path + file
     fp = open(filepath, "w")
-    fp.write(data + "\n")
     fp.close()
 
 
