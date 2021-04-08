@@ -11,10 +11,12 @@ sys.setdefaultencoding('utf8')
 app = App().getDataworksInstance()
 dirPath = app.config.env('app', 'dirpath')
 pageSize = int(app.config.env('dataworks', 'pageSize'))
-nodesFile = app.config.env('dataworks', 'nodesFile')
 projectEnv = app.config.env('dataworks', 'projectEnv')
-str2 = util.readFile(dirPath + '/org_' + nodesFile)
-ids = json.loads(str2)
+nodeProgramTypeFile = app.config.env('dataworks', 'nodesFile')
+str2 = util.readFile(dirPath + nodeProgramTypeFile)
+nodeProgramType = json.loads(str2)
+businessStr = util.readFile(dirPath + app.config.env('dataworks', 'businessFile'))
+ids = json.loads(businessStr)
 outputData = []
 noSuccessData = []
 now = util.time_unix()
@@ -26,14 +28,14 @@ for idItem in ids:
     page = 1
     flag = 1
     while flag == 1:
-        ret = app.doAction('ListInstances', {'BeginBizdate': BeginBizdate, 'EndBizdate': EndBizdate, 'NodeId': idItem['NodeId'], 'ProjectEnv': projectEnv, 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': idItem['ProjectId']})
+        ret = app.doAction('ListInstances', {'BizName': idItem['BusinessName'], 'NodeId': idItem['NodeId'], 'ProjectEnv': projectEnv, 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': idItem['ProjectId']})
         if ret['code'] == 0:
             data = json.loads(ret['data'], 'utf-8')
             data = unicode_convert(data)
             if 0 <= data['Data']['TotalCount'] < page * pageSize:
                 flag = 0
             for item in data['Data']['Instances']:
-                item['ProgramType'] = idItem['ProgramType']
+                item['ProgramType'] = nodeProgramType[idItem['NodeId']]['ProgramType']
                 if item['Status'] != 'SUCCESS':
                     noSuccessData.append(item)
                 else:
