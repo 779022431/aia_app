@@ -20,9 +20,8 @@ ids = json.loads(businessStr)
 outputData = []
 noSuccessData = []
 now = util.time_unix()
-interval = int(app.config.env('dataworks', 'interval'))
-BeginBizdate = util.time_date(now - interval * 60, "%Y-%m-%d %H:%M:01")
-EndBizdate = util.time_date(now, "%Y-%m-%d %H:%M:00")
+BeginBizdate = util.time_date(now - 86400, "%Y-%m-%d 00:00:00")
+EndBizdate = util.time_date(now, "%Y-%m-%d %H:%M:%S")
 for idItem in ids:
     if idItem == "":
         continue
