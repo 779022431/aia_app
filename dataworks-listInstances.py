@@ -48,6 +48,6 @@ for idItem in ids:
             print(ret['message'])
 if len(outputData) > 0:
     writeFile1 = app.config.env('dataworks', 'instancesFile')
-    util.write_file_append(dirPath, writeFile1, util.implode("\n", outputData))
+    util.write_file(dirPath, writeFile1, util.implode("\n", outputData))
 writeFile2 = app.config.env('dataworks', 'instancesNoSuccessFile')
 util.write_file(dirPath, writeFile2, json.dumps(noSuccessData))
