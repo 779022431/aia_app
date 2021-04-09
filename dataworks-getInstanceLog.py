@@ -22,4 +22,4 @@ for idItem in ids:
         print(ret['message'])
 if len(outputData) > 0:
     writeFile = app.config.env('dataworks', 'instanceLog')
-    util.write_file_append(dirPath, writeFile, util.implode("\n", outputData))
+    util.write_file(dirPath, writeFile, util.implode("\n", outputData))
