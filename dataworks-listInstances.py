@@ -39,7 +39,7 @@ for idItem in ids:
             for item in items:
                 item['ProgramType'] = util.get_dict_value(nodeProgramType, str(item['NodeId']), '')
                 if item['Status'] != 'SUCCESS':
-                    noSuccessData.append(item)
+                    noSuccessData.append({"InstanceId": item['InstanceId']})
                 else:
                     item['UseTime'] = item['FinishTime'] - item['BeginRunningTime']
                 outputData.append(json.dumps(item))
@@ -52,4 +52,3 @@ if len(outputData) > 0:
     util.write_file_append(dirPath, writeFile1, util.implode("\n", outputData))
     writeFile2 = app.config.env('dataworks', 'instancesNoSuccessFile')
     util.write_file(dirPath, writeFile2, json.dumps(noSuccessData))
-
