@@ -11,42 +11,43 @@ sys.setdefaultencoding('utf8')
 app = App().getDataworksInstance()
 dirPath = app.config.env('app', 'dirpath')
 pageSize = int(app.config.env('dataworks', 'pageSize'))
-nodesFile = app.config.env('dataworks', 'nodesFile')
 projectEnv = app.config.env('dataworks', 'projectEnv')
-str2 = util.readFile(dirPath + '/2' + nodesFile)
-ids = json.loads(str2)
+nodeProgramTypeFile = app.config.env('dataworks', 'nodeProgramTypeFile')
+str2 = util.readFile(dirPath + '/' + nodeProgramTypeFile)
+nodeProgramType = json.loads(str2)
+businessStr = util.readFile(dirPath + '/' + app.config.env('dataworks', 'businessFile'))
+ids = json.loads(businessStr)
 outputData = []
 noSuccessData = []
-timestamp = util.time_unix()
+now = util.time_unix()
+BeginBizdate = util.time_date(now - 86400, "%Y-%m-%d 00:00:00")
+EndBizdate = util.time_date(now, "%Y-%m-%d %H:%M:%S")
 for idItem in ids:
     if idItem == "":
         continue
     page = 1
     flag = 1
     while flag == 1:
-        ret = app.doAction('ListInstances', {'NodeId': idItem['NodeId'], 'ProjectEnv': projectEnv, 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': idItem['ProjectId']})
+        ret = app.doAction('ListInstances', {'BeginBizdate': BeginBizdate, 'EndBizdate': EndBizdate, 'BizName': idItem['BusinessName'], 'ProjectEnv': projectEnv, 'PageNumber': page, 'PageSize': pageSize, 'ProjectId': idItem['ProjectId']})
         if ret['code'] == 0:
             data = json.loads(ret['data'], 'utf-8')
-            data = unicode_convert(data)
-            if 0 <= data['Data']['TotalCount'] < page * pageSize:
+            totalCount = util.get_dict_value(data['Data'], 'TotalCount', 0)
+            if 0 <= totalCount < page * pageSize:
                 flag = 0
-            for item in data['Data']['Instances']:
-                item['ProgramType'] = idItem['ProgramType']
+            items = util.get_dict_value(data['Data'], 'Instances', [])
+            for item in items:
+                item['ProgramType'] = util.get_dict_value(nodeProgramType, str(item['NodeId']), '')
                 if item['Status'] != 'SUCCESS':
-                    noSuccessData.append(item)
+                    noSuccessData.append({"InstanceId": item['InstanceId']})
                 else:
                     item['UseTime'] = item['FinishTime'] - item['BeginRunningTime']
-                item['timestamp'] = timestamp
-                outputData.append(item)
+                outputData.append(json.dumps(item))
             page = page + 1
         else:
             flag = 0
             print(ret['message'])
-writeFile1 = app.config.env('dataworks', 'instancesFile')
-writeStr = ''
-for i in outputData:
-    writeStr = writeStr + json.dumps(i) + "\n"
-util.write_file_append(dirPath, writeFile1, writeStr)
 
+writeFile1 = app.config.env('dataworks', 'instancesFile')
+util.write_file(dirPath, writeFile1, util.implode("\n", outputData))
 writeFile2 = app.config.env('dataworks', 'instancesNoSuccessFile')
 util.write_file(dirPath, writeFile2, json.dumps(noSuccessData))

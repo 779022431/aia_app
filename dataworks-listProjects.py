@@ -1,32 +1,28 @@
 # -*- coding: utf-8 -*-
 import json
 import sys
-from util import App
-from util import unicode_convert
-from util import write_file
+from app import App
 import util
 
 reload(sys)
 sys.setdefaultencoding('utf8')
 
 app = App().getDataworksInstance()
+dirPath = app.config.env('app', 'dirpath')
+pageSize = int(app.config.env('dataworks', 'pageSize'))
+writeData = []
 page = 1
-pageSize = 10
 flag = 1
-projectIds = []
 while flag == 1:
     ret = app.doAction('ListProjects', {'PageNumber': page, 'PageSize': pageSize})
     if ret['code'] == 0:
         data = json.loads(ret['data'])
-        data = unicode_convert(data)
-        if 0 < data['PageResult']['TotalCount'] < page * pageSize:
+        if 0 <= data['PageResult']['TotalCount'] <= page * pageSize:
             flag = 0
         for item in data['PageResult']['ProjectList']:
-            projectIds.append(item['ProjectId'])
+            writeData.append(item)
         page = page + 1
     else:
         flag = 0
         print(ret['message'])
-
-dirPath = app.config.env('app', 'dirpath')
-write_file(dirPath, 'projects.txt', json.dumps(projectIds))
+util.write_file(dirPath, 'projects.txt', json.dumps(writeData))
