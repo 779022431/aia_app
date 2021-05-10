@@ -25,4 +25,5 @@ while flag == 1:
     else:
         flag = 0
         print(ret['message'])
-util.write_file(dirPath, 'rds.txt', json.dumps(writeData))
+fileName = app.config.env('rds', 'instanceFile')
+util.write_file(dirPath, fileName, json.dumps(writeData))
