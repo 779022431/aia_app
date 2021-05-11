@@ -60,3 +60,8 @@ class App:
         self.setDomain(self.config.env('dataworks', 'domain'))
         self.setVersion(self.config.env('dataworks', 'version'))
         return self
+
+    def getRdsInstance(self):
+        self.setDomain(self.config.env('rds', 'domain'))
+        self.setVersion(self.config.env('rds', 'version'))
+        return self

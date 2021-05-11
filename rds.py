@@ -7,7 +7,7 @@ import util
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-app = App().getDataworksInstance()
+app = App().getRdsInstance()
 dirPath = app.config.env('app', 'dirpath')
 pageSize = int(app.config.env('rds', 'pageSize'))
 writeData = []
