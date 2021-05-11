@@ -25,5 +25,6 @@ while flag == 1:
     else:
         flag = 0
         print(ret['message'])
+# 数据写入文件
 fileName = app.config.env('rds', 'instanceFile')
 util.write_file(dirPath, fileName, json.dumps(writeData))
