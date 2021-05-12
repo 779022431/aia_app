@@ -65,3 +65,8 @@ class App:
         self.setDomain(self.config.env('rds', 'domain'))
         self.setVersion(self.config.env('rds', 'version'))
         return self
+
+    def getMonitorInstance(self):
+        self.setDomain(self.config.env('monitor', 'domain'))
+        self.setVersion(self.config.env('monitor', 'version'))
+        return self
