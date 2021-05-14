@@ -70,3 +70,8 @@ class App:
         self.setDomain(self.config.env('monitor', 'domain'))
         self.setVersion(self.config.env('monitor', 'version'))
         return self
+
+    def getPolardbInstance(self):
+        self.setDomain(self.config.env('polardb', 'domain'))
+        self.setVersion(self.config.env('polardb', 'version'))
+        return self

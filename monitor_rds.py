@@ -9,7 +9,7 @@ sys.setdefaultencoding('utf8')
 
 app = App().getMonitorInstance()
 dirPath = app.config.env('app', 'dirpath')
-pageSize = int(app.config.env('rds', 'pageSize'))
+pageSize = int(app.config.env('monitor', 'pageSize'))
 writeData = []
 ret1 = app.doAction('DescribeMetricLast', {'Namespace': 'acs_rds_dashboard', 'MetricName': 'CpuUsage'})
 ret2 = app.doAction('DescribeMetricLast', {'Namespace': 'acs_rds_dashboard', 'MetricName': 'MemoryUsage'})
@@ -17,7 +17,6 @@ ret3 = app.doAction('DescribeMetricLast', {'Namespace': 'acs_rds_dashboard', 'Me
 if ret1['code'] == 0:
    data = json.loads(ret1['data'])
    print data
-exit()
 # 数据写入文件
-fileName = app.config.env('rds', 'rdsListFile')
+fileName = app.config.env('monitor', 'monitorListFile')
 util.write_file(dirPath, fileName, json.dumps(writeData))
