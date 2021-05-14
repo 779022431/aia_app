@@ -7,26 +7,32 @@ import util
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-app = App().getRdsInstance()
+app = App().getMonitorInstance()
 dirPath = app.config.env('app', 'dirpath')
-pageSize = int(app.config.env('rds', 'pageSize'))
-rdsList = util.readFile(dirPath + '/' + app.config.env('rds', 'rdsListFile'))
-ids = json.loads(rdsList)
-writeData = []
-page = 1
-flag = 1
-while flag == 1:
-    ret = app.doAction('DescribeDBInstances', {'PageNumber': page, 'PageSize': pageSize})
-    if ret['code'] == 0:
-        data = json.loads(ret['data'])
-        if 0 <= data['TotalRecordCount'] <= page * pageSize:
-            flag = 0
-        for item in data['Items']['DBInstance']:
-            writeData.append(item)
-        page = page + 1
-    else:
-        flag = 0
-        print(ret['message'])
-# 数据写入文件
-fileName = app.config.env('rds', 'rdsListFile')
-util.write_file(dirPath, fileName, json.dumps(writeData))
+# cpu
+ret1 = app.doAction('DescribeMetricLast', {'Namespace': 'acs_rds_dashboard', 'MetricName': 'CpuUsage'})
+data = json.loads(ret1['data'])
+datapoints = json.loads(data['Datapoints'])
+fileName1 = app.config.env('rds', 'rdsCpuFile')
+writeData1 = []
+for i in datapoints:
+    writeData1.append(json.dumps(i))
+util.write_file(dirPath, fileName1, util.implode("\n", writeData1))
+# memory
+ret1 = app.doAction('DescribeMetricLast', {'Namespace': 'acs_rds_dashboard', 'MetricName': 'MemoryUsage'})
+data = json.loads(ret1['data'])
+datapoints = json.loads(data['Datapoints'])
+fileName1 = app.config.env('rds', 'rdsMemoryFile')
+writeData1 = []
+for i in datapoints:
+    writeData1.append(json.dumps(i))
+util.write_file(dirPath, fileName1, util.implode("\n", writeData1))
+# DiskUsage
+ret1 = app.doAction('DescribeMetricLast', {'Namespace': 'acs_rds_dashboard', 'MetricName': 'DiskUsage'})
+data = json.loads(ret1['data'])
+datapoints = json.loads(data['Datapoints'])
+fileName1 = app.config.env('rds', 'rdsDiskFile')
+writeData1 = []
+for i in datapoints:
+    writeData1.append(json.dumps(i))
+util.write_file(dirPath, fileName1, util.implode("\n", writeData1))
