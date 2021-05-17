@@ -21,7 +21,6 @@ while flag == 1:
     data = json.loads(ret['data'])
     if 0 <= data['TotalRecordCount'] <= page * pageSize:
         flag = 0
-        continue
     for item in data['Items']['DBInstance']:
         writeData.append(item['DBInstanceId'])
     page = page + 1

@@ -22,9 +22,7 @@ for id in ids:
     page = 1
     flag = 1
     while flag == 1:
-        ret = app.doAction('DescribeSlowLogRecords', {'StartTime': startTime, 'EndTime': endTime, 'DBInstanceId': id, 'PageNumber': page, 'PageSize': pageSize})
-        print ret
-        exit()
+        ret = app.doAction('DescribeSlowLogRecords', {'StartTime': startTime, 'EndTime': endTime, 'DBClusterId': id, 'PageNumber': page, 'PageSize': pageSize})
         if ret['code'] != 0:
             break
         data = json.loads(ret['data'])
