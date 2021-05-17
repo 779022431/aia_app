@@ -36,7 +36,7 @@ for id in ids:
             # 超过十秒记录
             if item['QueryTimes'] < 10:
                 continue
-            item['DBInstanceId'] = id
+            item['DBClusterId'] = id
             writeData.append(json.dumps(item))
 # 数据写入文件
 fileName = app.config.env('polardb', 'polardbSlowSqlFile')
