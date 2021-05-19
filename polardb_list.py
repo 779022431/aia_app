@@ -22,7 +22,7 @@ while flag == 1:
     if 0 <= data['TotalRecordCount'] <= page * pageSize:
         flag = 0
     for item in data['Items']['DBCluster']:
-        writeData.append(item['DBClusterId'])
+        writeData.append({'id': item['DBClusterId'], 'name': item['DBClusterDescription']})
     page = page + 1
 # 数据写入文件
 fileName = app.config.env('polardb', 'polardbListFile')
