@@ -18,7 +18,9 @@ now = util.time_unix()
 slowSqlInterval = int(app.config.env('polardb', 'slowSqlInterval'))
 startTime = util.time_date(now - slowSqlInterval, "%Y-%m-%dT%H:%MZ")
 endTime = util.time_date(now, "%Y-%m-%dT%H:%MZ")
-for id in ids:
+for idItem in ids:
+    id = idItem['id']
+    name = idItem['name']
     page = 1
     flag = 1
     while flag == 1:
@@ -37,6 +39,7 @@ for id in ids:
             if item['QueryTimes'] < 10:
                 continue
             item['DBClusterId'] = id
+            item['DBClusterDescription'] = name
             writeData.append(json.dumps(item))
 # 数据写入文件
 fileName = app.config.env('polardb', 'polardbSlowSqlFile')
