@@ -2,3 +2,4 @@
 config.ini
 output
 *.pyc
+test.py
