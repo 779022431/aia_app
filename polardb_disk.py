@@ -22,19 +22,15 @@ writeData = []
 for idItem in ids:
     id = idItem['id']
     name = idItem['name']
-    ret1 = app.doAction('DescribeDBClusterPerformance', {'DBClusterId': id, 'Key': 'PolarDBDiskUsage', 'StartTime': startTime, 'EndTime': endTime})
     ret2 = app.doAction('DescribeDBClusterAttribute', {'DBClusterId': id})
     data2 = json.loads(ret2['data'])
     storageMax = round(data2['StorageMax'] / 1024 / 1024, 2)
-    other = 0
-    data = json.loads(ret1['data'])
-    for item in data['PerformanceKeys']['PerformanceItem']:
-        itemValue = item['Points']['PerformanceItemValue'][0]
-        if item['MetricName'] == 'mean_data_size':
-            other = float(itemValue['Value'])
+    storageUsed = round(data2['StorageUsed'] / 1024 / 1024, 2)
+    average = round(storageUsed * 100 / storageMax, 2)
     writeData.append(json.dumps({
-        'Average': format(other / storageMax, '.7f'),
+        'Average': format(average, '.2f') + '%',
         'DBClusterId': id,
+        'DBClusterDescription': name,
         'timestamp': (util.time_unix(startTime, "%Y-%m-%dT%H:%MZ") + 8 * 3600) * 1000,
     }))
 # DiskUsage
