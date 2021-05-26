@@ -15,9 +15,8 @@ readFile = app.config.env('polardb', 'polardbListFile')
 str2 = util.readFile(dirPath + '/' + readFile)
 ids = json.loads(str2)
 now = util.time_unix() - 8 * 3600
-slowSqlInterval = int(app.config.env('polardb', 'slowSqlInterval'))
-startTime = util.time_date(now - slowSqlInterval, "%Y-%m-%dT%H:%MZ")
-endTime = util.time_date(now, "%Y-%m-%dT%H:%MZ")
+startTime = util.time_date(now, "%Y-%m-%dT%H:%MZ")
+endTime = startTime
 for idItem in ids:
     id = idItem['id']
     name = idItem['name']
