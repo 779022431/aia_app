@@ -14,7 +14,7 @@ writeData = []
 readFile = app.config.env('rds', 'rdsListFile')
 str2 = util.readFile(dirPath + '/' + readFile)
 ids = json.loads(str2)
-now = util.time_unix() - 8 * 3600
+now = util.time_unix() - 8 * 3600 - 60
 startTime = util.time_date(now, "%Y-%m-%dT%H:%MZ")
 endTime = startTime
 for idItem in ids:

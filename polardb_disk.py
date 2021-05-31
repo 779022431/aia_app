@@ -12,10 +12,7 @@ dirPath = app.config.env('app', 'dirpath')
 readFile = app.config.env('polardb', 'polardbListFile')
 str2 = util.readFile(dirPath + '/' + readFile)
 ids = json.loads(str2)
-now = util.time_unix() - 8 * 3600
-performanceInterval = int(app.config.env('polardb', 'performanceInterval'))
-startTime = util.time_date(now - performanceInterval, "%Y-%m-%dT%H:%MZ")
-endTime = util.time_date(now, "%Y-%m-%dT%H:%MZ")
+now = util.time_unix()
 writeMem = []
 writeCpu = []
 writeData = []
@@ -31,7 +28,7 @@ for idItem in ids:
         'Average': format(average, '.2f') + '%',
         'DBClusterId': id,
         'DBClusterDescription': name,
-        'timestamp': (util.time_unix(startTime, "%Y-%m-%dT%H:%MZ") + 8 * 3600) * 1000,
+        'timestamp': now * 1000,
     }))
 # DiskUsage
 fileName1 = app.config.env('polardb', 'polardbDiskFile')
