@@ -13,8 +13,6 @@ readFile = app.config.env('polardb', 'polardbListFile')
 str2 = util.readFile(dirPath + '/' + readFile)
 ids = json.loads(str2)
 now = util.time_unix()
-writeMem = []
-writeCpu = []
 writeData = []
 for idItem in ids:
     id = idItem['id']
