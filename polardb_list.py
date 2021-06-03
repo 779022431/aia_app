@@ -11,7 +11,7 @@ app = App().getPolardbInstance()
 dirPath = app.config.env('app', 'dirpath')
 pageSize = int(app.config.env('polardb', 'pageSize'))
 writeData = []
-regions = util.explode(',', app.config.env('polardb', 'regions'))
+regions = util.explode(',', app.config.env('rds', 'regions'))
 for region in regions:
     page = 1
     flag = 1
