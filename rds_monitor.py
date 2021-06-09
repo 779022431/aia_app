@@ -13,6 +13,7 @@ dirPath = app.config.env('app', 'dirpath')
 readFile = app.config.env('rds', 'rdsListFile')
 str2 = util.readFile(dirPath + '/' + readFile)
 ids = json.loads(str2)
+excludeIds = util.explode(',', app.config.env('rds', 'excludeIds'))
 map = {}
 for idItem in ids:
     map[idItem['id']] = idItem['name']
@@ -23,7 +24,7 @@ datapoints = json.loads(data['Datapoints'])
 fileName1 = app.config.env('rds', 'rdsCpuFile')
 writeData1 = []
 for i in datapoints:
-    if i['instanceId'] not in map:
+    if i['instanceId'] in excludeIds:
         continue
     i['instanceDescription'] = util.get_dict_value(map, i['instanceId'])
     writeData1.append(json.dumps(i))
@@ -35,7 +36,7 @@ datapoints = json.loads(data['Datapoints'])
 fileName1 = app.config.env('rds', 'rdsMemoryFile')
 writeData1 = []
 for i in datapoints:
-    if i['instanceId'] not in map:
+    if i['instanceId'] in excludeIds:
         continue
     i['instanceDescription'] = util.get_dict_value(map, i['instanceId'])
     writeData1.append(json.dumps(i))
@@ -47,7 +48,7 @@ datapoints = json.loads(data['Datapoints'])
 fileName1 = app.config.env('rds', 'rdsDiskFile')
 writeData1 = []
 for i in datapoints:
-    if i['instanceId'] not in map:
+    if i['instanceId'] in excludeIds:
         continue
     i['instanceDescription'] = util.get_dict_value(map, i['instanceId'])
     writeData1.append(json.dumps(i))
