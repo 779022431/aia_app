@@ -24,6 +24,8 @@ datapoints = json.loads(data['Datapoints'])
 fileName1 = app.config.env('polardb', 'polardbCpuFile')
 writeData1 = []
 for i in datapoints:
+    if i['clusterId'] not in map:
+        continue
     i['clusterDescription'] = util.get_dict_value(map, i['clusterId'])
     writeData1.append(json.dumps(i))
 util.write_file(dirPath, fileName1, util.implode("\n", writeData1))
@@ -34,6 +36,8 @@ datapoints = json.loads(data['Datapoints'])
 fileName1 = app.config.env('polardb', 'polardbMemoryFile')
 writeData1 = []
 for i in datapoints:
+    if i['clusterId'] not in map:
+        continue
     i['clusterDescription'] = util.get_dict_value(map, i['clusterId'])
     writeData1.append(json.dumps(i))
 util.write_file(dirPath, fileName1, util.implode("\n", writeData1))

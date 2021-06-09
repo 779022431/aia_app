@@ -23,6 +23,8 @@ datapoints = json.loads(data['Datapoints'])
 fileName1 = app.config.env('rds', 'rdsCpuFile')
 writeData1 = []
 for i in datapoints:
+    if i['instanceId'] not in map:
+        continue
     i['instanceDescription'] = util.get_dict_value(map, i['instanceId'])
     writeData1.append(json.dumps(i))
 util.write_file(dirPath, fileName1, util.implode("\n", writeData1))
@@ -33,6 +35,8 @@ datapoints = json.loads(data['Datapoints'])
 fileName1 = app.config.env('rds', 'rdsMemoryFile')
 writeData1 = []
 for i in datapoints:
+    if i['instanceId'] not in map:
+        continue
     i['instanceDescription'] = util.get_dict_value(map, i['instanceId'])
     writeData1.append(json.dumps(i))
 util.write_file(dirPath, fileName1, util.implode("\n", writeData1))
@@ -43,6 +47,8 @@ datapoints = json.loads(data['Datapoints'])
 fileName1 = app.config.env('rds', 'rdsDiskFile')
 writeData1 = []
 for i in datapoints:
+    if i['instanceId'] not in map:
+        continue
     i['instanceDescription'] = util.get_dict_value(map, i['instanceId'])
     writeData1.append(json.dumps(i))
 util.write_file(dirPath, fileName1, util.implode("\n", writeData1))
